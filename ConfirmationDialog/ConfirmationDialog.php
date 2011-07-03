@@ -1,5 +1,12 @@
 <?php
 
+use Nette\Application\UI\Control;
+use Nette\Application\UI\Form;
+use Nette\Utils\Html;
+use Nette\Environment;
+use Nette\MemberAccessException;
+use Nette\InvalidStateException;
+
 /**
  * Confirmation dialog with dynamic signals
  *
@@ -14,24 +21,6 @@
  */
 
 
-//UNCOMMENT IF YOU ARE USING NETTE WITH NAMESPACES 
-//
-//use \Nette\Application\Control;
-//use \Nette\Application\AppForm;
-//use \Nette\Web\Html;
-//use \Nette\Environment;
-//
-
-if(!function_exists('lcfirst'))
-{
-    function lcfirst($string)
-    {
-        $string{0} = strtolower($string{0});
-        return $string;
-    }
-}
-
-
 class ConfirmationDialog extends Control
 {
 
@@ -42,13 +31,13 @@ class ConfirmationDialog extends Control
 		'expired' => 'Confirmation token expires. Please try action again.',
 	);
 
-	/** @var \Nette\Application\AppForm */
+	/** @var Nette\Application\UI\Form */
 	private $form;
 
-	/** @var Nette\Web\Html Confirmation question */
+	/** @var Nette\Utils\Html Confirmation question */
 	private $question;
 
-	/** @var Nette\Web\Session */
+	/** @var Nette\Http\Session */
 	private $session;
 
 	/** @var array Storage of confirmation handlers*/
@@ -64,7 +53,7 @@ class ConfirmationDialog extends Control
 	{
 		parent::__construct($parent, $name);
 
-		$this->form = new AppForm($this, 'form');
+		$this->form = new Form($this, 'form');
 
 		$this->form->addSubmit('yes', self::$_strings['yes'])
 			->onClick[] = array($this, 'confirmClicked');
@@ -96,7 +85,7 @@ class ConfirmationDialog extends Control
 	/**
 	 * Access to Yes or No form button controls.
 	 * @param string $name Only 'yes' or 'no' is accepted
-	 * @return \Nette\Forms\SubmitButton
+	 * @return Nette\Forms\Controls\SubmitButton
 	 */
 	public function getFormButton($name)
 	{
@@ -110,7 +99,7 @@ class ConfirmationDialog extends Control
 
 	/**
 	 * Return element prototype of nested Form
-	 * @return \Nette\Web\Html
+	 * @return Nette\Utils\Html
 	 */
 	public function getFormElementPrototype()
 	{
@@ -238,7 +227,7 @@ class ConfirmationDialog extends Control
 
 	/**
 	 * Confirm YES clicked
-	 * @param \Nette\Forms\SubmitButton $button
+	 * @param Nette\Forms\Controls\SubmitButton $button
 	 * @return void
 	 */
 	public function confirmClicked($button)
@@ -274,7 +263,7 @@ class ConfirmationDialog extends Control
 
 	/**
 	 * Confirm NO clicked
-	 * @param \Nette\Forms\SubmitButton $button
+	 * @param Nette\Forms\Controls\SubmitButton $button
 	 */
 	public function cancelClicked($button)
 	{
@@ -308,7 +297,7 @@ class ConfirmationDialog extends Control
 	 * Template factory.
 	 * @return ITemplate
 	 */
-	protected function createTemplate()
+	protected function createTemplate($class = NULL)
 	{
 		$template = parent::createTemplate();
 		// Nette filter is registered by default in Control.
@@ -331,4 +320,3 @@ class ConfirmationDialog extends Control
 	}
 
 }
-

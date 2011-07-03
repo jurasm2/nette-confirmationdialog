@@ -15,8 +15,13 @@
  */
 
 
-//use \Nette\Application\Presenter;
-//use \Nette\Web\Html;
+use Nette\Application\UI\Presenter;
+use Nette\Utils\Html;
+
+// You should move ConfirmationDialog folder from the distribution to your 
+// libs folder but in this demo we don't want to distribute the addon twice.
+include __DIR__ . '/../../../ConfirmationDialog/ConfirmationDialog.php';
+
 
 class DefaultPresenter extends Presenter
 {

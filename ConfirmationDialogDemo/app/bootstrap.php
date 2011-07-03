@@ -1,30 +1,29 @@
 <?php
 
-use Nette\Debug;
-use Nette\Environment;
-use Nette\Loaders\RobotLoader;
-use Nette\Application\SimpleRouter;
-use Nette\Application\IRouter;
+use Nette\Diagnostics\Debugger,
+	Nette\Environment,
+	Nette\Application\Routers\SimpleRouter;
 
-require LIBS_DIR . '/Nette/loader.php';
-//
-// Change this to path where you have ConfirmationDialog Component
-require APP_DIR . '../../ConfirmationDialog/ConfirmationDialog.php';
 
-Debug::enable();
 
-Environment::loadConfig();
+// Load Nette Framework
+// this allows load Nette Framework classes automatically so that
+// you don't have to litter your code with 'require' statements
+require __DIR__ . '/../libs/nette.min.php';
 
+
+// Enable Nette\Debug for error visualisation & logging
+Debugger::enable();
+
+// Enable RobotLoader - this allows load all classes automatically
+// so that you don't have to litter your code with 'require' statements
+Environment::getRobotLoader()->register();
+
+
+// Configure application
 $application = Environment::getApplication();
-
-$router = $application->getRouter();
-
-
-$router[] = new Nette\Application\SimpleRouter(array(
-	'presenter' => 'Default',
-	'action' => 'default',
-));
+$application->router[] = new SimpleRouter('Default:default');
 
 
-
+// Run the application!
 $application->run();
