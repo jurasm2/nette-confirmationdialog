@@ -126,8 +126,6 @@ class DefaultPresenter extends Presenter
 
 		if (!$this->isAjax())
 			$this->redirect('this');
-		else
-			$this->invalidateControl('flashes');
 	}
 
 	function confirmedDeleteRecursive($id)
@@ -136,8 +134,6 @@ class DefaultPresenter extends Presenter
 
 		if (!$this->isAjax())
 			$this->redirect('this');
-		else
-			$this->invalidateControl('flashes');
 
 	}
 
@@ -151,9 +147,6 @@ class DefaultPresenter extends Presenter
 
 		// show aditional confirmation question
 		$dialog->showConfirm('deleteRecursive', array('id' => $id));
-		if ($this->isAjax())
-			$this->invalidateControl('flashes');
-
 	}
 
 
@@ -168,6 +161,7 @@ class DefaultPresenter extends Presenter
 	{
 		$this->template->showAjaxLinks = !$this['confirmForm']->isVisible();
 		$this->invalidateControl('links');
+		$this->invalidateControl('flashes');
 	}
 
 } 
