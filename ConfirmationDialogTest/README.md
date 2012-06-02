@@ -1,6 +1,8 @@
 # ConfirmationDialog Test
 
-To run these test install these software parts first:
+Simple GUI test of the demo application.
+
+# Installation
 
 - PHPUnit: http://www.phpunit.de/manual/3.2/en/installation.html
 - Selenium Server + PHPUnit_Selenium: http://www.phpunit.de/manual/3.7/en/selenium.html

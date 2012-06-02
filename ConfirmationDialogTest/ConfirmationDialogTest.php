@@ -8,15 +8,26 @@
 class ConfirmationDialogDemoTest extends PHPUnit_Extensions_SeleniumTestCase
 {
 
+	/**
+	 * @var array
+	 */
+	private $config;
+
+	public function __construct($name = NULL, array $data = array(), $dataName = '')
+	{
+		parent::__construct($name, $data, $dataName);
+		$this->config = require __DIR__ . '/config.php';
+	}
+
 	protected function setUp()
 	{
-		$this->setBrowser("*firefox");
-		$this->setBrowserUrl("http://localhost/");
+		$this->setBrowser($this->config['browser']);
+		$this->setBrowserUrl($this->config['browserUrl']);
 	}
 
 	public function testEnableUser()
 	{
-		$this->open("/confirm-dialog/ConfirmationDialogDemo/www/");
+		$this->open($this->config['basepath'] . "/ConfirmationDialogDemo/www/");
 		$this->click("link=Enable user");
 		sleep(1);
 		$this->click("id=frmform-yes");
@@ -35,7 +46,7 @@ class ConfirmationDialogDemoTest extends PHPUnit_Extensions_SeleniumTestCase
 
 	public function testDeleteUser()
 	{
-		$this->open("/confirm-dialog/ConfirmationDialogDemo/www/");
+		$this->open($this->config['basepath'] . "/ConfirmationDialogDemo/www/");
 		$this->click("link=Delete user");
 		sleep(1);
 		$this->verifyTextPresent("Do you really want to delete user '10'?");
@@ -71,7 +82,7 @@ class ConfirmationDialogDemoTest extends PHPUnit_Extensions_SeleniumTestCase
 
 	public function testInfiniteQuestion()
 	{
-		$this->open("/confirm-dialog/ConfirmationDialogDemo/www/");
+		$this->open($this->config['basepath'] . "/ConfirmationDialogDemo/www/");
 		$this->click("link=Infinite question");
 		sleep(1);
 		$this->verifyTextPresent("You are at step '1'");
