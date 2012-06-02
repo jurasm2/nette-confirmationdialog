@@ -1,11 +1,19 @@
 <?php
 
+namespace ConfirmationDialogTest;
+
 /**
- * Description of ConfirmationDialogTest
+ * Simple Selenium test of the demo app.
+ * 
+ * To run this test, you're gonna need these things:
+ * - phpunit/PHPUnit
+ * - phpunit/PHPUnit_Selenium
+ * - Selenium Server
+ * - Firefox
  *
  * @author Václav Šír
  */
-class ConfirmationDialogDemoTest extends PHPUnit_Extensions_SeleniumTestCase
+class BrowserBasedTest extends \PHPUnit_Extensions_SeleniumTestCase
 {
 
 	/**
