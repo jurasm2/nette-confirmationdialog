@@ -31,7 +31,9 @@
 
 <body>
 
+    {snippet flashes}
         {foreach $flashes as $flash}<div class="flash {$flash->type}">{$flash->message}</div>{/foreach}
+    {/snippet}
 
 	{include #content}
 
