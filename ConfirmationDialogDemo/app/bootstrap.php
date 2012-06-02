@@ -1,29 +1,19 @@
 <?php
 
-use Nette\Diagnostics\Debugger,
-	Nette\Environment,
-	Nette\Application\Routers\SimpleRouter;
-
+use Nette\Application\Routers\Route;
 
 
 // Load Nette Framework
-// this allows load Nette Framework classes automatically so that
-// you don't have to litter your code with 'require' statements
 require __DIR__ . '/../libs/nette.min.php';
 
 
-// Enable Nette\Debug for error visualisation & logging
-Debugger::enable();
-
-// Enable RobotLoader - this allows load all classes automatically
-// so that you don't have to litter your code with 'require' statements
-Environment::getRobotLoader()->register();
-
-
 // Configure application
-$application = Environment::getApplication();
-$application->router[] = new SimpleRouter('Default:default');
+$configurator = new Nette\Config\Configurator;
+$configurator->enableDebugger(__DIR__ . '/../log');
+$configurator->setTempDirectory(__DIR__ . '/../temp');
+$container = $configurator->createContainer();
+$container->router[] = new Nette\Application\Routers\SimpleRouter('Default:default');
 
 
-// Run the application!
-$application->run();
+// Configure and run the application!
+$container->application->run();
