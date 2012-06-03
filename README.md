@@ -1,13 +1,19 @@
 # ConfirmationDialog
 
-ConfirmationDialog je komponenta umožňující pohodlné ošetření akcí, vyžadujících zvýšenou pozornost a potvrzení uživatele. Díky revoluční schoponosti dynamických událostí ji lze snadno použít i v jiných komponentách jako je DataGrid. Jako samozřejmost je kompletní podpora AJAXu.
+ConfirmationDialog is a component for the [Nette Framework][nette], that
+provides comfortable handling of actions that need to be confirmed by the user.
+Thanks to the revolutionary feature of dynamic events it can be easily used in
+other components such as the DataGrid. Complete AJAX support is a matter of
+course.
 
-## Odkazy
+## Links
 
-Diskuse: http://forum.nette.org/cs/2636-confirmationdialog
-Dokumentace: http://addons.nette.org/cs/confirmationdialog
+- Forum (Czech language): http://forum.nette.org/cs/2636-confirmationdialog
+- Documentation (Czech language): http://addons.nette.org/cs/confirmationdialog
 
-## Autoři
+## Authors
 
 (c) 2009-2010, Lukáš Doležal
 
+
+[nette]: http://nette.org/
