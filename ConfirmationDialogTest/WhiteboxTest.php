@@ -8,6 +8,11 @@ require_once __DIR__ . '/../ConfirmationDialogDemo/app/presenters/DefaultPresent
 
 class WhiteboxTest extends \PHPUnit_Framework_TestCase
 {
+
+	/**
+	 * @var \SystemContainer
+	 */
+	private $container;
 	
 	/**
 	 * @var SessionMock
@@ -34,13 +39,52 @@ class WhiteboxTest extends \PHPUnit_Framework_TestCase
 		}
 		
 		$container = new \SystemContainer;
+		\Nette\Environment::setContext($container);
 		$container->router[] = new \Nette\Application\Routers\SimpleRouter('Default:default');
+		$this->container = $container;
 		$this->session = $container->session = new SessionMock($this);
-		$this->presenter = new \DefaultPresenter($container);
 	}
 	
-	public function testClickingDeleteAndConfirmingResultsInFlashMessage()
+	private function clickEnableAndGetTheToken()
 	{
-		$this->assertTrue(true);
+		// Click the enable link
+		$request = new \Nette\Application\Request(
+				'Default',
+				'get',
+				array('action' => 'default', 'nonajaxForm-id' => '10', 'do' => 'nonajaxForm-confirmEnable')
+				);
+		$presenter = new \DefaultPresenter($this->container);
+		$presenter->autoCanonicalize = false;
+		$response = $presenter->run($request);
+
+		// Get the token
+		ob_start();
+		$presenter->getComponent('nonajaxForm-form')->render();
+		$htmlSource = ob_get_clean();
+		preg_match('~value="([0-9a-z]{15,})"~', $htmlSource, $matches);
+		$token = $matches[1];
+		
+		return $token;
+	}
+	
+	public function testClickingEnableAndConfirmingLeadsToSuccess()
+	{
+		$token = $this->clickEnableAndGetTheToken();
+
+		// Click the Yes button
+		$request = new \Nette\Application\Request(
+				'Default',
+				'post',
+				array('action' => 'default', 'do' => 'nonajaxForm-form-submit'),
+				array('yes' => 'Yes', 'token' => $token)
+				);
+		$presenter = new \DefaultPresenter($this->container);
+		$presenter->autoCanonicalize = false;
+		$response = $presenter->run($request);
+		$flashSession = $presenter->getFlashSession();
+		$flash = $flashSession->flash[0]->message;
+
+		$this->assertInstanceOf('Nette\\Application\\Responses\\RedirectResponse', $response);
+		$this->assertEquals('User enabled.', $flash);
 	}
 }
