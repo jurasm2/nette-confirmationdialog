@@ -6,6 +6,12 @@ Thanks to the revolutionary feature of dynamic events it can be easily used in
 other components such as the DataGrid. Complete AJAX support is a matter of
 course.
 
+## License
+
+- ConfirmationDialog: GNU LGPL
+- ConfirmationDialogDemo: CC-BY
+- ConfirmationDialogTests: WTFPL
+
 ## Links
 
 - Forum (Czech language): http://forum.nette.org/cs/2636-confirmationdialog
