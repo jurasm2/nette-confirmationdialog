@@ -18,12 +18,6 @@ class WhiteboxTest extends \PHPUnit_Framework_TestCase
 	 * @var SessionMock
 	 */
 	private $session;
-	
-	/**
-	 * @var \DefaultPresenter
-	 */
-	private $presenter;
-
 
 	public function setUp()
 	{
