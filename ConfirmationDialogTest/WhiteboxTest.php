@@ -81,4 +81,25 @@ class WhiteboxTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Nette\\Application\\Responses\\RedirectResponse', $response);
 		$this->assertEquals('User enabled.', $flash);
 	}
+	
+	public function testClickingEnableAndAbortingLeadsToAbort()
+	{
+		$token = $this->clickEnableAndGetTheToken();
+
+		// Click the No button
+		$request = new \Nette\Application\Request(
+				'Default',
+				'post',
+				array('action' => 'default', 'do' => 'nonajaxForm-form-submit'),
+				array('no' => 'No', 'token' => $token)
+				);
+		$presenter = new \DefaultPresenter($this->container);
+		$presenter->autoCanonicalize = false;
+		$response = $presenter->run($request);
+		$flashSession = $presenter->getFlashSession();
+		
+		$this->assertInstanceOf('Nette\\Application\\Responses\\RedirectResponse', $response);
+		$this->assertEquals($this->container->httpRequest->url->baseUrl, $response->url);
+		$this->assertEmpty($flashSession->flash);
+	}
 }
