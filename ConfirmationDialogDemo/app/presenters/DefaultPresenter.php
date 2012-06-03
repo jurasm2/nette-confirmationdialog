@@ -30,7 +30,7 @@ class DefaultPresenter extends Presenter
 	/** ConfirmationDialog factory */
 	public function createComponentConfirmForm()
 	{
-		$form = new ConfirmationDialog();
+		$form = new ConfirmationDialog($this->context->session->getSection('ConfirmationDialog/tokens'));
 
 		// you can easily create AJAX confirm form with eg. jquery.ajaxforms.js
 		$form->getFormElementPrototype()->addClass('ajax');
@@ -73,7 +73,7 @@ class DefaultPresenter extends Presenter
 
 	public function createComponentNonajaxForm()
 	{
-		$form = new ConfirmationDialog();
+		$form = new ConfirmationDialog($this->context->session->getSection('ConfirmationDialog/tokens'));
 
 		$form->dialogClass = 'static_dialog second';
 		$form->getFormButton('yes')->getControlPrototype()->addClass('yesbut');

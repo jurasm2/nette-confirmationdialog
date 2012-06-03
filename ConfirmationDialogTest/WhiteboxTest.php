@@ -33,7 +33,6 @@ class WhiteboxTest extends \PHPUnit_Framework_TestCase
 		}
 		
 		$container = new \SystemContainer;
-		\Nette\Environment::setContext($container);
 		$container->router[] = new \Nette\Application\Routers\SimpleRouter('Default:default');
 		$this->container = $container;
 		$this->session = $container->session = new SessionMock($this);

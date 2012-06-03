@@ -49,7 +49,7 @@ class ConfirmationDialog extends Control
 	/** @var string class of div element */
 	public $dialogClass = 'confirm_dialog';
 
-	public function __construct($parent = NULL, $name = NULL)
+	public function __construct(\Nette\Http\SessionSection $session, $parent = NULL, $name = NULL)
 	{
 		parent::__construct($parent, $name);
 
@@ -63,7 +63,7 @@ class ConfirmationDialog extends Control
 
 		$this->question = Html::el('p');
 
-		$this->session = Environment::getSession('ConfirmationDialog/tokens');
+		$this->session = $session; //Environment::getSession('ConfirmationDialog/tokens');
 	}
 
 
