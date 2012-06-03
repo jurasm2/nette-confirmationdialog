@@ -82,7 +82,7 @@ class WhiteboxTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('User enabled.', $flash);
 	}
 	
-	public function testClickingEnableAndAbortingLeadsToAbort()
+	public function testClickingEnableAndThenAbortingLeadsToAbort()
 	{
 		$token = $this->clickEnableAndGetTheToken();
 
@@ -101,5 +101,24 @@ class WhiteboxTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Nette\\Application\\Responses\\RedirectResponse', $response);
 		$this->assertEquals($this->container->httpRequest->url->baseUrl, $response->url);
 		$this->assertEmpty($flashSession->flash);
+	}
+	
+	public function testWrongTokenLeadsToFuckOff()
+	{
+		$this->clickEnableAndGetTheToken();
+
+		// Click the Yes button with incorrect token
+		$request = new \Nette\Application\Request(
+				'Default',
+				'post',
+				array('action' => 'default', 'do' => 'nonajaxForm-form-submit'),
+				array('yes' => 'Yes', 'token' => 'nevim')
+				);
+		$presenter = new \DefaultPresenter($this->container);
+		$presenter->autoCanonicalize = false;
+		$response = $presenter->run($request);
+		$flashSession = $presenter->getFlashSession();
+
+		$this->assertEquals('Confirmation token has expired. Please try action again.', $flashSession->flash[0]->message);
 	}
 }
