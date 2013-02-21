@@ -1,7 +1,7 @@
 {
     "name": "srigi/nette-confirmationdialog",
     "description": "Addon to display confirmation dialog in Nette  webapplications",
-    "version": "1.0.0",
+    "version": "1.0.1",
 
     "authors": [
         {
