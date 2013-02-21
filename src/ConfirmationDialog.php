@@ -301,7 +301,7 @@ class ConfirmationDialog extends Control
 	{
 		$template = parent::createTemplate();
 		// Nette filter is registered by default in Control.
-		$template->setFile(dirname(__FILE__) . '/form.phtml');
+		$template->setFile(dirname(__FILE__) . '/confirmationDialog.latte');
 		return $template;
 	}
 
