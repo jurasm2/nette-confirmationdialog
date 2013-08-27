@@ -295,7 +295,9 @@ class ConfirmationDialog extends Nette\Application\UI\Control
 
 		$this->visible = FALSE;
 		$this->invalidateControl();
-		$this->presenter->redirect('this');
+		if (!$this->presenter->isAjax()) {
+			$this->presenter->redirect('this');
+		}
 	}
 
 
