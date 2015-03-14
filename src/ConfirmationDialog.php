@@ -39,7 +39,7 @@ class ConfirmationDialog extends Nette\Application\UI\Control
 	private $session;
 
 	/** @var array storage of confirmation handlers */
-	private $confirmationHandlers;
+	private static $confirmationHandlers;
 
 	/** @var bool */
 	public $visible = FALSE;
@@ -82,10 +82,10 @@ class ConfirmationDialog extends Nette\Application\UI\Control
 	 * @param string $signal
 	 * @return string
 	 */
-	public function formatSignalMethod($signal)
+	public static function formatSignalMethod($signal)
 	{
 		if (    stripos($signal, 'confirm') === 0
-			&&  isset($this->confirmationHandlers[lcfirst(substr($signal, 7))])
+			&&  isset(self::$confirmationHandlers[lcfirst(substr($signal, 7))])
 		) {
 			return '_handleShow';
 		}
@@ -168,7 +168,7 @@ class ConfirmationDialog extends Nette\Application\UI\Control
 		if (!preg_match('/[A-Za-z_]+/', $name)) {
 			throw new Nette\InvalidArgumentException("Confirmation name contain is invalid.");
 		}
-		if (isset($this->confirmationHandlers[$name])) {
+		if (isset(self::$confirmationHandlers[$name])) {
 			throw new Nette\InvalidArgumentException("Confirmation '$name' already exists.");
 		}
 		if (!is_callable($methodCallback)) {
@@ -178,7 +178,7 @@ class ConfirmationDialog extends Nette\Application\UI\Control
 			throw new Nette\InvalidArgumentException('$question must be callback or string.');
 		}
 
-		$this->confirmationHandlers[$name] = array(
+		self::$confirmationHandlers[$name] = array(
 			'handler' => $methodCallback,
 			'question' => $question,
 		);
@@ -198,14 +198,14 @@ class ConfirmationDialog extends Nette\Application\UI\Control
 		if (!is_string($confirmName)) {
 			throw new Nette\InvalidArgumentException('$confirmName must be string.');
 		}
-		if (!isset($this->confirmationHandlers[$confirmName])) {
+		if (!isset(self::$confirmationHandlers[$confirmName])) {
 			throw new Nette\InvalidStateException("confirmation '$confirmName' do not exist.");
 		}
 		if (!is_array($params)) {
 			throw new Nette\InvalidArgumentException('$params must be array.');
 		}
 
-		$confirm = $this->confirmationHandlers[$confirmName];
+		$confirm = self::$confirmationHandlers[$confirmName];
 
 		if (is_callable($confirm['question'])) {
 			$question = call_user_func_array($confirm['question'], array($this, $params));
@@ -241,7 +241,7 @@ class ConfirmationDialog extends Nette\Application\UI\Control
 		list(,$signal) = $this->presenter->getSignal();
 		$confirmName = (substr($signal, 7));
 		$confirmName{0} = strtolower($confirmName{0});
-		$params = $this->getParameter();
+		$params = $this->getParameters();
 
 		$this->showConfirm($confirmName, $params);
 	}
@@ -269,7 +269,7 @@ class ConfirmationDialog extends Nette\Application\UI\Control
 		$this->visible = FALSE;
 		$this->invalidateControl();
 
-		$callback = $this->confirmationHandlers[$action['confirm']]['handler'];
+		$callback = self::$confirmationHandlers[$action['confirm']]['handler'];
 
 		$args = $action['params'];
 		$args[] = $this;
